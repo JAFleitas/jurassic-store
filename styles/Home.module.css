@@ -1,5 +1,11 @@
 .container {
-  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 70px;
+  margin: auto;
+  background: #eff2fe;
+  color: #0f0f0f;
+  min-height: 100vh;
 }
 
 .main {
@@ -10,6 +16,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #f0f0f0;
+  color: #0f0f0f;
 }
 
 .footer {
@@ -121,7 +129,7 @@
     border-color: #222;
   }
   .code {
-    background: #111;
+    background: #fafafa;
   }
   .logo img {
     filter: invert(1);
