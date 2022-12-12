@@ -3,10 +3,10 @@ import { Navbar } from "../components/Navbar";
 import { ProductContainer } from "../components/ProductContainer";
 import { GetStaticProps, NextPage } from "next";
 
-import axios from "axios";
 import { IProduct } from "../interfaces/product";
 import { SideCart } from "../components/SideCart";
 import { Search } from "../components/Search";
+import jurassicApi from "../api/jurassicApi";
 
 interface Props {
   products: IProduct[];
@@ -31,7 +31,7 @@ const Home: NextPage<Props> = ({ products }) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await axios.get("http://localhost:3000/api/products");
+  const { data } = await jurassicApi.get("/products");
 
   return {
     props: {

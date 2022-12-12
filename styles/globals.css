@@ -56,7 +56,9 @@ a {
 .circular-btn {
   border-radius: 0.5rem;
 }
-
+.circular-btn button {
+  background: transparent;
+}
 .circular-btn:hover {
   background-color: #274494;
 }

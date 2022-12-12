@@ -13,6 +13,7 @@ import styles from "../../styles/Home.module.css";
 import { useForm } from "react-hook-form";
 import { isEmail } from "../../utils/validations";
 import StripeCheckout from "react-stripe-checkout";
+import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -28,7 +29,8 @@ const CheckOutPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-
+  const onPaySubmit = async ({ name, email, address }: FormData) => {};
+  const router = useRouter();
   return (
     <div className={styles.container}>
       <Typography sx={{ mb: 5 }} component="h1" variant="h2">
@@ -36,7 +38,7 @@ const CheckOutPage = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={5}>
-          <form onSubmit={handleSubmit(() => {})} noValidate>
+          <form onSubmit={handleSubmit(onPaySubmit)} noValidate>
             <Grid container gap={4}>
               <Grid item xs={12} sm={10}>
                 <TextField
@@ -84,20 +86,29 @@ const CheckOutPage = () => {
                   helperText={errors.address?.message}
                 />
               </Grid>
-              {/*   <Button
+              {/*  <Button
                 type="submit"
                 sx={{
                   background: "#2c40f3",
                   color: "#f0f0f0",
                   padding: "4px 10px",
                   textTransform: "none",
-                  mt: 2,
+                  mt: 4,
                 }}
                 className="circular-btn"
-                onClick={() => {}}
-              ></Button> */}
+                onClick={() => {
+                  router.push("/checkout/stripe");
+                }}
+                disabled={
+                  !!errors.address?.message ||
+                  !!errors.name?.message ||
+                  !!errors.email?.message
+                }
+              >
+                Confirm and Pay
+              </Button> */}
               <StripeCheckout
-                label="Confirm and Pay"
+                label="Pay with credit card"
                 stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY || ""}
                 token={() => {}}
                 name=""

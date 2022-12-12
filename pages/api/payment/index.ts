@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { db } from "../../../database/db";
 const Stripe = require("stripe");
 type Data = {
   success: boolean;
@@ -9,8 +10,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { token = {}, amount = 0 } = req.body;
-
+  const { token = {} } = req.body;
+  const amount = 0;
   if (!Object.keys(token).length || !amount) {
     res.status(400).json({ success: false });
   }
@@ -20,7 +21,7 @@ export default async function handler(
       email: token.email,
       source: token.id,
     })
-    .catch((e) => {
+    .catch((e: any) => {
       console.log(e);
       return null;
     });
@@ -37,15 +38,15 @@ export default async function handler(
   const charge = await stripe.charges
     .create(
       {
-        amount: amount * 100,
+        amount: 0,
         currency: "USD",
         customer: customerId,
         receipt_email: token.email,
-        description: "Donation",
+        description: "pay",
       },
       { idempotencyKey: invoiceId }
     )
-    .catch((e) => {
+    .catch((e: any) => {
       console.log(e);
       return null;
     });
@@ -54,6 +55,8 @@ export default async function handler(
     res.status(500).json({ success: false });
     return;
   }
+  await db.connect();
 
+  await db.disconnect();
   res.status(201).json({ success: true });
 }
