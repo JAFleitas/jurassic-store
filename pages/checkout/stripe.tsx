@@ -7,6 +7,7 @@ import { jurassicApi } from "../../api";
 import { CartContext } from "../../contexts/cart";
 import { useRouter } from "next/router";
 import { UiContext } from "../../contexts";
+import Swal from "sweetalert2";
 
 const StripePage = () => {
   const router = useRouter();
@@ -25,7 +26,13 @@ const StripePage = () => {
     });
     const { success } = data;
     if (success) {
-      window.alert("Thank you for purchasing");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Thanks for your purchase",
+        showConfirmButton: false,
+        timer: 500,
+      });
       removeAllProducts();
       toggleSideMenu();
       router.replace("/");
