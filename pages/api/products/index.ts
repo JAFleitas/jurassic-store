@@ -21,7 +21,7 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await db.connect();
 
   const products = await Product.find()
-    .select("name images price slug inStock _id")
+    .select("name images price slug stock _id")
     .lean();
 
   await db.disconnect();

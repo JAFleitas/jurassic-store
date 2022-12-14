@@ -49,15 +49,15 @@ export const getProductsBySearchTerm = async (
 };
 
 export const getAllProducts = async () => {
-  /* await db.connect();
+  await db.connect();
 
   const products = await Product.find().lean();
 
   await db.disconnect();
 
-  return JSON.parse(JSON.stringify(products)); */
+  return JSON.parse(JSON.stringify(products));
 
-  const { data } = await jurassicApi.get("/products");
+  /*   const { data } = await jurassicApi.get("/products");
 
-  return JSON.parse(JSON.stringify(data));
+  return JSON.parse(JSON.stringify(data)); */
 };
