@@ -4,14 +4,17 @@ import { UiProvider } from "../contexts";
 import { CartProvider } from "../contexts/cart";
 
 import { CssBaseline } from "@mui/material";
+import { CheckoutProvider } from "../contexts/checkout";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <CartProvider>
-      <UiProvider>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </UiProvider>
-    </CartProvider>
+    <CheckoutProvider>
+      <CartProvider>
+        <UiProvider>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </UiProvider>
+      </CartProvider>
+    </CheckoutProvider>
   );
 }

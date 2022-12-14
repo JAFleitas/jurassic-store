@@ -17,7 +17,8 @@ type CartActionType =
         tax_rate: number;
         totalPrice: number;
       };
-    };
+    }
+  | { type: "[CART] - Remove All" };
 
 export const cartReducer = (
   state: CartState,
@@ -50,6 +51,11 @@ export const cartReducer = (
       return {
         ...state,
         ...action.payload,
+      };
+    case "[CART] - Remove All":
+      return {
+        ...state,
+        cart: [],
       };
     default:
       return state;

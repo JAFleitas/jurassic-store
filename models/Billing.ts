@@ -6,7 +6,7 @@ const billingSchema = new Schema(
     name: { type: String, required: true },
     address: { type: String, required: true },
     email: { type: String, required: true },
-    tota: { type: Number, required: true },
+    amount: { type: Number, required: true },
     products: [
       {
         _id: { type: String, require: true },
@@ -20,6 +20,6 @@ const billingSchema = new Schema(
 );
 
 const Billing: Model<IBilling> =
-  mongoose.models.Billing || model("Product", billingSchema);
+  mongoose.models.Billing || model("Billing", billingSchema);
 
 export default Billing;

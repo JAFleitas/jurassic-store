@@ -7,6 +7,7 @@ import { IProduct } from "../interfaces/product";
 import { SideCart } from "../components/SideCart";
 import { Search } from "../components/Search";
 import jurassicApi from "../api/jurassicApi";
+import { getAllProducts } from "../database/dbProducts";
 
 interface Props {
   products: IProduct[];
@@ -31,11 +32,11 @@ const Home: NextPage<Props> = ({ products }) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await jurassicApi.get("/products");
+  const products = await getAllProducts();
 
   return {
     props: {
-      products: data,
+      products,
     },
   };
 };

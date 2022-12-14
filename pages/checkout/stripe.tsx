@@ -1,7 +1,37 @@
 import styles from "../../styles/Home.module.css";
-import StripeCheckout from "react-stripe-checkout";
+import StripeCheckout, { Token } from "react-stripe-checkout";
 import { Box } from "@mui/material";
-const stripe = () => {
+import { CheckoutContext } from "../../contexts/checkout";
+import { useContext } from "react";
+import { jurassicApi } from "../../api";
+import { CartContext } from "../../contexts/cart";
+import { useRouter } from "next/router";
+import { UiContext } from "../../contexts";
+
+const StripePage = () => {
+  const router = useRouter();
+  const { email, name, address } = useContext(CheckoutContext);
+  const { totalPrice, cart, removeAllProducts } = useContext(CartContext);
+  const { toggleSideMenu } = useContext(UiContext);
+  const products = cart.map((e) => {
+    e._id, e.quantity;
+  });
+  const handleSubmit = async (token: Token) => {
+    const { data } = await jurassicApi.post("/payment", {
+      token,
+      form: { email, name, address },
+      amount: totalPrice,
+      products,
+    });
+    const { success } = data;
+    if (success) {
+      window.alert("Thank you for purchasing");
+      removeAllProducts();
+      toggleSideMenu();
+      router.replace("/");
+    }
+  };
+
   return (
     <div
       className={styles.container}
@@ -15,16 +45,16 @@ const stripe = () => {
         <StripeCheckout
           label="Pay with credit card"
           stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY || ""}
-          token={() => {}}
+          token={handleSubmit}
           name=""
           panelLabel="Pay"
           currency="USD"
-          amount={0}
-          email={"gonzalo@gmail.com"}
+          amount={Number(`${totalPrice}00`)}
+          email={email}
         ></StripeCheckout>
       </Box>
     </div>
   );
 };
 
-export default stripe;
+export default StripePage;

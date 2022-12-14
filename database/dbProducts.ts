@@ -1,6 +1,7 @@
 import { db } from "./db";
 import Product from "../models/Product";
 import { IProduct } from "../interfaces/product";
+import jurassicApi from "../api/jurassicApi";
 
 export const getProductBySlug = async (
   slug: string
@@ -48,11 +49,15 @@ export const getProductsBySearchTerm = async (
 };
 
 export const getAllProducts = async () => {
-  await db.connect();
+  /* await db.connect();
 
   const products = await Product.find().lean();
 
   await db.disconnect();
 
-  return JSON.parse(JSON.stringify(products));
+  return JSON.parse(JSON.stringify(products)); */
+
+  const { data } = await jurassicApi.get("/products");
+
+  return JSON.parse(JSON.stringify(data));
 };

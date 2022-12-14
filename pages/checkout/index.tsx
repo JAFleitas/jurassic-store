@@ -7,13 +7,15 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { CartContext } from "../../contexts/cart";
 import styles from "../../styles/Home.module.css";
 import { useForm } from "react-hook-form";
 import { isEmail } from "../../utils/validations";
-import StripeCheckout from "react-stripe-checkout";
+
 import { useRouter } from "next/router";
+
+import { CheckoutContext } from "../../contexts/checkout";
 
 type FormData = {
   name: string;
@@ -29,8 +31,15 @@ const CheckOutPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const onPaySubmit = async ({ name, email, address }: FormData) => {};
+  const { createBilling } = useContext(CheckoutContext);
+
+  const enablePayment = async ({ name, email, address }: FormData) => {
+    if (!name || !email || !address) return;
+    createBilling({ name, email, address });
+    router.push("checkout/stripe");
+  };
   const router = useRouter();
+
   return (
     <div className={styles.container}>
       <Typography sx={{ mb: 5 }} component="h1" variant="h2">
@@ -38,7 +47,7 @@ const CheckOutPage = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={5}>
-          <form onSubmit={handleSubmit(onPaySubmit)} noValidate>
+          <form onSubmit={handleSubmit(enablePayment)} noValidate>
             <Grid container gap={4}>
               <Grid item xs={12} sm={10}>
                 <TextField
@@ -86,7 +95,7 @@ const CheckOutPage = () => {
                   helperText={errors.address?.message}
                 />
               </Grid>
-              {/*  <Button
+              <Button
                 type="submit"
                 sx={{
                   background: "#2c40f3",
@@ -96,9 +105,6 @@ const CheckOutPage = () => {
                   mt: 4,
                 }}
                 className="circular-btn"
-                onClick={() => {
-                  router.push("/checkout/stripe");
-                }}
                 disabled={
                   !!errors.address?.message ||
                   !!errors.name?.message ||
@@ -106,17 +112,7 @@ const CheckOutPage = () => {
                 }
               >
                 Confirm and Pay
-              </Button> */}
-              <StripeCheckout
-                label="Pay with credit card"
-                stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY || ""}
-                token={() => {}}
-                name=""
-                panelLabel="Pay"
-                currency="USD"
-                amount={0}
-                email={"gonzalo@gmail.com"}
-              ></StripeCheckout>
+              </Button>
             </Grid>
           </form>
         </Grid>
@@ -134,6 +130,7 @@ const CheckOutPage = () => {
                     sx={{
                       objectFit: "contain",
                       maxHeight: "80px",
+                      background: "#fffdfd",
                     }}
                   />
                 </CardActionArea>
