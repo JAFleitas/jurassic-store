@@ -7,15 +7,15 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import React, { useContext, useRef } from "react";
-import { CartContext } from "../../contexts/cart";
+
 import styles from "../../styles/Home.module.css";
 import { useForm } from "react-hook-form";
 import { isEmail } from "../../utils/validations";
 
 import { useRouter } from "next/router";
 
-import { CheckoutContext } from "../../contexts/checkout";
+import useCart from "../../hooks/useCart";
+import useCheckout from "../../hooks/useCheckout";
 
 type FormData = {
   name: string;
@@ -24,14 +24,14 @@ type FormData = {
 };
 
 const CheckOutPage = () => {
-  const { cart, totalPrice } = useContext(CartContext);
+  const { cart, totalPrice } = useCart();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const { createBilling } = useContext(CheckoutContext);
+  const { createBilling } = useCheckout();
 
   const enablePayment = async ({ name, email, address }: FormData) => {
     if (!name || !email || !address) return;

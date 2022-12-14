@@ -1,19 +1,21 @@
 import styles from "../../styles/Home.module.css";
 import StripeCheckout, { Token } from "react-stripe-checkout";
 import { Box } from "@mui/material";
-import { CheckoutContext } from "../../contexts/checkout";
-import { useContext } from "react";
+
 import { jurassicApi } from "../../api";
-import { CartContext } from "../../contexts/cart";
+
 import { useRouter } from "next/router";
-import { UiContext } from "../../contexts";
+
 import Swal from "sweetalert2";
+import useCart from "../../hooks/useCart";
+import useUi from "../../hooks/useUi";
+import useCheckout from "../../hooks/useCheckout";
 
 const StripePage = () => {
   const router = useRouter();
-  const { email, name, address } = useContext(CheckoutContext);
-  const { totalPrice, cart, removeAllProducts } = useContext(CartContext);
-  const { toggleSideMenu } = useContext(UiContext);
+  const { email, name, address } = useCheckout();
+  const { totalPrice, cart, removeAllProducts } = useCart();
+  const { toggleSideMenu } = useUi();
   const products = cart.map(({ _id, quantity }) => {
     return { _id, quantity };
   });

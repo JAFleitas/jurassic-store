@@ -1,7 +1,6 @@
 import { db } from "./db";
 import Product from "../models/Product";
 import { IProduct } from "../interfaces/product";
-import jurassicApi from "../api/jurassicApi";
 
 export const getProductBySlug = async (
   slug: string

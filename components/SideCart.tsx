@@ -9,29 +9,21 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import { CartContext } from "../contexts/cart";
+
 import { ICartProduct } from "../interfaces/product";
-import { UiContext } from "../contexts";
+
 import { useRouter } from "next/router";
+import useCart from "../hooks/useCart";
+import useUi from "../hooks/useUi";
 
 interface Props {
   editable?: boolean;
 }
 export const SideCart: FC<Props> = ({ editable = false }) => {
   const router = useRouter();
-  const {
-    cart,
-    updateProductQuantity,
-    removeCartProduct,
+  const { cart, removeCartProduct, totalPrice } = useCart();
 
-    totalPrice,
-  } = useContext(CartContext);
-
-  const onUpdateQuantityProduct = (product: ICartProduct, newValue: number) => {
-    product.quantity = newValue;
-    updateProductQuantity(product);
-  };
-  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
+  const { isMenuOpen, toggleSideMenu } = useUi();
   return (
     <Drawer
       open={isMenuOpen}

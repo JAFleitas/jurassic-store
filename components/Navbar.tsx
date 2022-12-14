@@ -1,14 +1,14 @@
 import style from "../styles/Header.module.css";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { UiContext } from "../contexts";
-import { useContext } from "react";
 import Link from "next/link";
 import { Badge } from "@mui/material";
 import { IconButton } from "@mui/material";
-import { CartContext } from "../contexts/cart";
+
+import useCart from "../hooks/useCart";
+import useUi from "../hooks/useUi";
 export const Navbar = () => {
-  const { toggleSideMenu } = useContext(UiContext);
-  const { numberOfItems } = useContext(CartContext);
+  const { toggleSideMenu } = useUi();
+  const { numberOfItems } = useCart();
   return (
     <header className={style.container}>
       <Link href="/">

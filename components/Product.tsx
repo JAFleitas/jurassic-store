@@ -1,4 +1,4 @@
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import {
   Card,
   CardActionArea,
@@ -10,7 +10,8 @@ import {
   Button,
 } from "@mui/material";
 import { IProduct, ICartProduct } from "../interfaces/product";
-import { CartContext } from "../contexts/cart";
+
+import useCart from "../hooks/useCart";
 
 interface Props {
   product: IProduct;
@@ -18,7 +19,7 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { addProductToCart } = useContext(CartContext);
+  const { addProductToCart } = useCart();
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     _id: product._id,
     image: product.images[0],
