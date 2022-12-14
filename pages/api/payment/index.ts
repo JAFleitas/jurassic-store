@@ -41,7 +41,7 @@ export default async function handler(
   const charge = await stripe.charges
     .create(
       {
-        amount: amount,
+        amount: Number(`${amount}00`),
         currency: "USD",
         customer: customerId,
         receipt_email: token.email,
@@ -58,6 +58,7 @@ export default async function handler(
     res.status(500).json({ success: false });
     return;
   }
+
   await db.connect();
   const billing = await Billing.create({ ...form, products, amount });
   await db.disconnect();

@@ -14,8 +14,8 @@ const StripePage = () => {
   const { email, name, address } = useContext(CheckoutContext);
   const { totalPrice, cart, removeAllProducts } = useContext(CartContext);
   const { toggleSideMenu } = useContext(UiContext);
-  const products = cart.map((e) => {
-    e._id, e.quantity;
+  const products = cart.map(({ _id, quantity }) => {
+    return { _id, quantity };
   });
   const handleSubmit = async (token: Token) => {
     const { data } = await jurassicApi.post("/payment", {
@@ -31,7 +31,7 @@ const StripePage = () => {
         icon: "success",
         title: "Thanks for your purchase",
         showConfirmButton: false,
-        timer: 500,
+        timer: 1000,
       });
       removeAllProducts();
       toggleSideMenu();

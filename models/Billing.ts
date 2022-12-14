@@ -7,12 +7,7 @@ const billingSchema = new Schema(
     address: { type: String, required: true },
     email: { type: String, required: true },
     amount: { type: Number, required: true },
-    products: [
-      {
-        _id: { type: String, require: true },
-        quantity: { type: Number, require: true },
-      },
-    ],
+    products: [{ type: Object, require: true }],
   },
   {
     timestamps: true,
